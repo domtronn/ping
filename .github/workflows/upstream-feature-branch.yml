@@ -12,7 +12,7 @@ jobs:
       matrix:
         dependents: 
           - repo: domtronn/pong
-            workflow: auto-feature-branch.yaml
+            workflow: auto-feature-branch.yml
   
     steps:
       - uses: actions/checkout@v2
