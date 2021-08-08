@@ -21,9 +21,13 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, world!
 
+
+      - id: ref
+        run: echo "::set-output name=branch::$(echo ${{ GITHUB_REF }} | sed 's/refs\/heads\///g')"
+        
       - name: Dispatch Branch Deployment event
         run: |
           curl -X POST https://api.github.com/repos/${{ matrix.dependents.repo }}/actions/workflows/${{ matrix.dependents.workflow }}/dispatches \
           -H 'Accept: application/vnd.github.everest-preview+json' \
           -u ${{ secrets.BASIC_AUTH_PAT }} \
-          --data '{ "ref": "${{ matrix.dependents.ref }}", "inputs": { "branch": "'"$GITHUB_REF"'", "sha": "'"$GITHUB_SHA"'" } }'
+          --data '{ "ref": "${{ matrix.dependents.ref }}", "inputs": { "branch": "${{ steps.ref.outputs.branch }}", "sha": "'"$GITHUB_SHA"'" } }'
