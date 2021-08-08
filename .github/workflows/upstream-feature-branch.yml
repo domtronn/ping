@@ -13,6 +13,7 @@ jobs:
         dependents: 
           - repo: domtronn/pong
             workflow: auto-feature-branch.yml
+            ref: main
   
     steps:
       - uses: actions/checkout@v2
@@ -25,4 +26,4 @@ jobs:
           curl -X POST https://api.github.com/repos/${{ matrix.dependents.repo }}/actions/workflows/${{ matrix.dependents.workflow }}/dispatches \
           -H 'Accept: application/vnd.github.everest-preview+json' \
           -u ${{ secrets.BASIC_AUTH_PAT }} \
-          --data '{ "ref": "workflow_dispatch", "inputs": { "branch": "'"$GITHUB_REF"'", "sha": "'"$GITHUB_SHA"'" } }'
+          --data '{ "ref": "${{ matrix.dependents.ref }}", "inputs": { "branch": "'"$GITHUB_REF"'", "sha": "'"$GITHUB_SHA"'" } }'
