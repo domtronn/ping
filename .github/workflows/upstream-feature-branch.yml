@@ -10,7 +10,9 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        dependents: [domtronn/pong]
+        dependents: 
+          - repo: domtronn/pong
+            workflow: auto-feature-branch.yaml
   
     steps:
       - uses: actions/checkout@v2
@@ -20,7 +22,7 @@ jobs:
 
       - name: Dispatch Branch Deployment event
         run: |
-          curl -X POST https://api.github.com/repos/${{ matrix.dependents }}/actions/workflows/echo-repo-dispatch.yaml/dispatches \
+          curl -X POST https://api.github.com/repos/${{ matrix.dependents.repo }}/actions/workflows/${{ matrix.dependents.workflow }}/dispatches \
           -H 'Accept: application/vnd.github.everest-preview+json' \
           -u ${{ secrets.BASIC_AUTH_PAT }} \
           --data '{ "ref": "workflow_dispatch", "inputs": { "branch": "'"$GITHUB_REF"'", "sha": "'"$GITHUB_SHA"'" } }'
