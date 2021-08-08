@@ -24,7 +24,7 @@ jobs:
       - id: ref
         run: |
           echo "::set-output name=branch::$(echo $GITHUB_REF | sed 's/refs\/heads\///g')"
-          echo "::set-output name=feature::$(echo $GITHUB_REF | sed 's/refs\/heads\///g' | xargs -I {} echo ping//{}"
+          echo "::set-output name=feature::$(echo $GITHUB_REF | sed 's/refs\/heads\///g' | xargs -I {} echo ping//{})"
         
       - name: Dispatch Branch Deployment event
         run: |
