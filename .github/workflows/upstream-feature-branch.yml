@@ -11,6 +11,7 @@ jobs:
       fail-fast: true
       matrix:
         dependents: 
+          # Dependents need the repo name, the name of the workflow yaml file, and the main/master ref
           - repo: domtronn/pong
             workflow: auto-feature-branch.yml
             ref: main
@@ -18,15 +19,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Run a one-line script
-        run: echo Hello, world!
-
       - id: ref
         run: |
           echo "::set-output name=branch::$(echo $GITHUB_REF | sed 's/refs\/heads\///g')"
           echo "::set-output name=feature::$(echo $GITHUB_REF | sed 's/refs\/heads\///g' | xargs -I {} echo ping/{})"
         
       - name: Dispatch Branch Deployment event
+        # This needs a Basic auth PAT e.g. user:token
         run: |
           curl -X POST https://api.github.com/repos/${{ matrix.dependents.repo }}/actions/workflows/${{ matrix.dependents.workflow }}/dispatches \
           -H 'Accept: application/vnd.github.everest-preview+json' \
