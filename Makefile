@@ -1,4 +1,4 @@
 .PHONY: id
 
 id: 
-	@$(MAKE) -C overlays
+	@$(MAKE) --no-print-directory -C overlays
