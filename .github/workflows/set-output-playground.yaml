@@ -6,6 +6,8 @@ jobs:
   output:
     runs-on: ubuntu-latest
     steps: 
+      - uses: actions/checkout@v2
+
       - id: set-ref
         run: |
           echo "::set-output name=id::$(make id)"
