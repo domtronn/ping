@@ -1,0 +1,15 @@
+name: Set Output examples
+
+on: push
+
+jobs:
+  output:
+    runs-on: ubuntu-latest
+    steps: 
+      - id: set-ref
+        run: |
+          echo "::set-output name=id::$(make id)"
+
+      - id: echo-ref
+        run: |
+          echo "${{ steps.set-ref.outputs.id }}"
